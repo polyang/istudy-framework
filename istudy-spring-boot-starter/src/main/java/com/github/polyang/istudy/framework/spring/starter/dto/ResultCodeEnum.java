@@ -1,11 +1,11 @@
-package com.github.polyang.istudy.framework.spring.starter.controller;
+package com.github.polyang.istudy.framework.spring.starter.dto;
 
 /**
  * 响应code常量
  * @author polyang
  * @date 2021/6/11 18:11
  */
-public enum ResponseCodeEnum {
+public enum ResultCodeEnum {
 
     SUCCESS(200, "成功"),
     FAILURE(400, "业务异常"),
@@ -17,7 +17,7 @@ public enum ResponseCodeEnum {
     private int code;
     private String message;
 
-    ResponseCodeEnum(int code, String message) {
+    ResultCodeEnum(int code, String message) {
         this.code = code;
         this.message = message;
     }
