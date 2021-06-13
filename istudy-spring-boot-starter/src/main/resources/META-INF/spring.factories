@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.github.polyang.istudy.framework.spring.starter.config.AutoScanPackagesConfiguration
