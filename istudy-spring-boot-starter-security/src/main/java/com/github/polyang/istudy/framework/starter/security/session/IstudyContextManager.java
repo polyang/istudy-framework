@@ -3,6 +3,7 @@ package com.github.polyang.istudy.framework.starter.security.session;
 import com.github.polyang.istudy.framework.starter.security.base.bo.OnlineSession;
 import com.github.polyang.istudy.framework.starter.security.base.bo.OnlineSessionItem;
 import com.github.polyang.istudy.framework.starter.security.context.IstudyContext;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +25,7 @@ public class IstudyContextManager {
     private static final String REDIS_USER_ATTRIBUTE_KEY = "istudy-user-context";
 
     @Resource
-    private StringRedisTemplate stringRedisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     public void updateContext(HttpSession session, IstudyContext context) {
         // 设置用户信息
@@ -37,11 +38,11 @@ public class IstudyContextManager {
     }
 
     public OnlineSession getOnlineSession(String userKey) {
-        return (OnlineSession) stringRedisTemplate.opsForHash().get(REDIS_ONLINE_SESSION_KEY, userKey);
+        return (OnlineSession) redisTemplate.opsForHash().get(REDIS_ONLINE_SESSION_KEY, userKey);
     }
 
     public void setOnlineSession(String userKey, OnlineSession onlineSession) {
-        stringRedisTemplate.opsForHash().put(REDIS_ONLINE_SESSION_KEY, userKey, onlineSession);
+        redisTemplate.opsForHash().put(REDIS_ONLINE_SESSION_KEY, userKey, onlineSession);
     }
 
     public void saveOrUpdateOnlineSession(HttpSession session, String userKey, OnlineSessionItem onlineSessionItemParam) {
@@ -83,7 +84,11 @@ public class IstudyContextManager {
                     }
                     onlineSession.setOnlineList(newOnlineList);
                 }
-                setOnlineSession(userKey, onlineSession);
+                if (onlineSession.getOnlineList().size() > 0) {
+                    setOnlineSession(userKey, onlineSession);
+                } else {
+                    redisTemplate.opsForHash().delete(REDIS_ONLINE_SESSION_KEY, userKey);
+                }
             }
         }
     }

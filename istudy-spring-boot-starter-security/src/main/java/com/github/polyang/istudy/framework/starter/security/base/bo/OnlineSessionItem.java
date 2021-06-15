@@ -1,11 +1,15 @@
 package com.github.polyang.istudy.framework.starter.security.base.bo;
 
+import java.io.Serializable;
+
 /**
  * 在线的会话详细项
  * @author huangbaoliang
  * @date 2021/6/15 18:20
  */
-public class OnlineSessionItem {
+public class OnlineSessionItem implements Serializable {
+
+    private static final long serialVersionUID = -6946303211331932532L;
 
     /**
      * 登录系统类型（如web系统、APP系统等等）
