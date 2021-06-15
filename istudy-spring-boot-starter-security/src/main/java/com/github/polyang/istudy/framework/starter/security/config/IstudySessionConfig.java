@@ -7,12 +7,11 @@ import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
 import org.springframework.session.web.http.HttpSessionIdResolver;
 
 /**
- * spring session配置
+ * spring session配置（需要自己加上@EnableRedisHttpSession来开启spring redis session）
  * @author huangbaoliang
  * @date 2021/6/15 20:00
  */
 @Configuration
-@EnableRedisHttpSession
 public class IstudySessionConfig {
 
     @Bean
