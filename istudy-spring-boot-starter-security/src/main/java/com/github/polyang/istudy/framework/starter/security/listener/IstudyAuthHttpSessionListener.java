@@ -1,6 +1,6 @@
-package com.github.polyang.istudy.starter.security.listener;
+package com.github.polyang.istudy.framework.starter.security.listener;
 
-import com.github.polyang.istudy.starter.security.session.IstudyContextManager;
+import com.github.polyang.istudy.framework.starter.security.session.IstudyContextManager;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

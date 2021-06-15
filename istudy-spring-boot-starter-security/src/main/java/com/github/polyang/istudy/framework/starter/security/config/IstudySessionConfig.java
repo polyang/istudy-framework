@@ -1,4 +1,4 @@
-package com.github.polyang.istudy.starter.security.config;
+package com.github.polyang.istudy.framework.starter.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

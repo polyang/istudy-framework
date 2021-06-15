@@ -1,8 +1,7 @@
-package com.github.polyang.istudy.starter.security.base.bo;
+package com.github.polyang.istudy.framework.starter.security.base.bo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**

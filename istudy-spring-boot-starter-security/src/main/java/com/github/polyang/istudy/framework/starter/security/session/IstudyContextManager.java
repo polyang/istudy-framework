@@ -1,8 +1,8 @@
-package com.github.polyang.istudy.starter.security.session;
+package com.github.polyang.istudy.framework.starter.security.session;
 
-import com.github.polyang.istudy.starter.security.base.bo.OnlineSession;
-import com.github.polyang.istudy.starter.security.base.bo.OnlineSessionItem;
-import com.github.polyang.istudy.starter.security.context.IstudyContext;
+import com.github.polyang.istudy.framework.starter.security.base.bo.OnlineSession;
+import com.github.polyang.istudy.framework.starter.security.base.bo.OnlineSessionItem;
+import com.github.polyang.istudy.framework.starter.security.context.IstudyContext;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 

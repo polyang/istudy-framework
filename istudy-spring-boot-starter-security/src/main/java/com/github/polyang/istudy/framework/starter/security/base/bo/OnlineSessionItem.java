@@ -1,4 +1,4 @@
-package com.github.polyang.istudy.starter.security.base.bo;
+package com.github.polyang.istudy.framework.starter.security.base.bo;
 
 /**
  * 在线的会话详细项
