@@ -1,9 +1,10 @@
 package com.github.polyang.istudy.framework.starter.security.session;
 
+import cn.hutool.core.util.StrUtil;
 import com.github.polyang.istudy.framework.starter.security.base.bo.OnlineSession;
 import com.github.polyang.istudy.framework.starter.security.base.bo.OnlineSessionItem;
 import com.github.polyang.istudy.framework.starter.security.context.IstudyContext;
-import org.springframework.data.redis.core.RedisTemplate;
+import com.google.gson.Gson;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -25,11 +26,12 @@ public class IstudyContextManager {
     private static final String REDIS_USER_SESSION_KEY = "istudy:user:context:";
 
     @Resource
-    private RedisTemplate<String, Object> redisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
 
     public void updateContext(HttpSession session, IstudyContext context) {
+        Gson gson = new Gson();
         // 设置用户信息
-        redisTemplate.opsForValue().set(REDIS_USER_SESSION_KEY + session.getId(), context);
+        stringRedisTemplate.opsForValue().set(REDIS_USER_SESSION_KEY + session.getId(), gson.toJson(context));
         // 设置在线用户会话
         OnlineSessionItem onlineSessionItem = new OnlineSessionItem();
         onlineSessionItem.setSessionId(session.getId());
@@ -38,11 +40,16 @@ public class IstudyContextManager {
     }
 
     public OnlineSession getOnlineSession(String userKey) {
-        return (OnlineSession) redisTemplate.opsForHash().get(REDIS_ONLINE_SESSION_KEY, userKey);
+        OnlineSession onlineSession = null;
+        String onlineSessionStr = (String) stringRedisTemplate.opsForHash().get(REDIS_ONLINE_SESSION_KEY, userKey);
+        if (StrUtil.isNotEmpty(onlineSessionStr)) {
+            onlineSession = new Gson().fromJson(onlineSessionStr, OnlineSession.class);
+        }
+        return onlineSession;
     }
 
     public void setOnlineSession(String userKey, OnlineSession onlineSession) {
-        redisTemplate.opsForHash().put(REDIS_ONLINE_SESSION_KEY, userKey, onlineSession);
+        stringRedisTemplate.opsForHash().put(REDIS_ONLINE_SESSION_KEY, userKey, new Gson().toJson(onlineSession));
     }
 
     public void saveOrUpdateOnlineSession(HttpSession session, String userKey, OnlineSessionItem onlineSessionItemParam) {
@@ -87,18 +94,23 @@ public class IstudyContextManager {
                 if (onlineSession.getOnlineList().size() > 0) {
                     setOnlineSession(userKey, onlineSession);
                 } else {
-                    redisTemplate.opsForHash().delete(REDIS_ONLINE_SESSION_KEY, userKey);
+                    stringRedisTemplate.opsForHash().delete(REDIS_ONLINE_SESSION_KEY, userKey);
                 }
             }
         }
     }
 
     public IstudyContext getContext(HttpSession session) {
-        return (IstudyContext) redisTemplate.opsForValue().get(REDIS_USER_SESSION_KEY + session.getId());
+        IstudyContext istudyContext = null;
+        String istudyContextStr = stringRedisTemplate.opsForValue().get(REDIS_USER_SESSION_KEY + session.getId());
+        if (StrUtil.isNotEmpty(istudyContextStr)) {
+            istudyContext = new Gson().fromJson(istudyContextStr, IstudyContext.class);
+        }
+        return istudyContext;
     }
 
     public void deleteContext(HttpSession session) {
-        redisTemplate.delete(REDIS_USER_SESSION_KEY + session.getId());
+        stringRedisTemplate.delete(REDIS_USER_SESSION_KEY + session.getId());
     }
 
 }
