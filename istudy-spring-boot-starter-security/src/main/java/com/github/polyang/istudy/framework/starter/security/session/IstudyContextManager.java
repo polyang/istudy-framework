@@ -22,14 +22,14 @@ import java.util.List;
 public class IstudyContextManager {
 
     private static final String REDIS_ONLINE_SESSION_KEY = "istudy:online:user:sessions";
-    private static final String REDIS_USER_ATTRIBUTE_KEY = "istudy-user-context";
+    private static final String REDIS_USER_SESSION_KEY = "istudy:user:context:";
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
     public void updateContext(HttpSession session, IstudyContext context) {
         // 设置用户信息
-        session.setAttribute(REDIS_USER_ATTRIBUTE_KEY, context);
+        redisTemplate.opsForValue().set(REDIS_USER_SESSION_KEY + session.getId(), context);
         // 设置在线用户会话
         OnlineSessionItem onlineSessionItem = new OnlineSessionItem();
         onlineSessionItem.setSessionId(session.getId());
@@ -94,7 +94,11 @@ public class IstudyContextManager {
     }
 
     public IstudyContext getContext(HttpSession session) {
-        return (IstudyContext) session.getAttribute(REDIS_USER_ATTRIBUTE_KEY);
+        return (IstudyContext) redisTemplate.opsForValue().get(REDIS_USER_SESSION_KEY + session.getId());
+    }
+
+    public void deleteContext(HttpSession session) {
+        redisTemplate.delete(REDIS_USER_SESSION_KEY + session.getId());
     }
 
 }

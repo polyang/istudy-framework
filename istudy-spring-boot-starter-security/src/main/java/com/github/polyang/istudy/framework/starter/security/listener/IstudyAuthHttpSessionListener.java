@@ -22,5 +22,7 @@ public class IstudyAuthHttpSessionListener implements HttpSessionListener {
     public void sessionDestroyed(HttpSessionEvent se) {
         // 删除在线用户信息
         contextManager.deleteOnlineSession(se.getSession());
+        // 删除context
+        contextManager.deleteContext(se.getSession());
     }
 }
