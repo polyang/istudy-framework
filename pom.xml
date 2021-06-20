@@ -11,6 +11,7 @@
         <module>istudy-tool</module>
         <module>istudy-spring-boot-starter</module>
         <module>istudy-spring-boot-starter-security</module>
+        <module>istudy-spring-boot-starter-session</module>
     </modules>
     <packaging>pom</packaging>
     <description>istudy系列</description>
